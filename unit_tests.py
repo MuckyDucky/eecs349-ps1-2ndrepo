@@ -95,10 +95,17 @@ def testPruningOnHouseData(inFile):
 #####added by Jimin for testing
 def main():
   data = [dict(a=2, b=0, Class=1),dict(a=1, b=0, Class=1), dict(a=1, b=1, Class=0)]
+
+  #Todo: test with no-splitting data too
   #print(ID3.get_values_of_attr(data,'a'))
   #print(ID3.partition(data,'b'))
   #print(ID3.class_counts(data))
-  print(ID3.IG(ID3.partition(data,'a'),ID3.entropy(data)))
+  #print(ID3.IG(ID3.partition(data,'a'),ID3.entropy(data)))
+  #print(ID3.count_attributes(data))
+  #print(ID3.get_attr_list(data))
+  #print(ID3.find_best_split(data))
+  #print(ID3.ID3(data,0))
+  testID3AndEvaluate()
 
 if __name__ == "__main__":
   main()

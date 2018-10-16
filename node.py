@@ -1,9 +1,10 @@
 
 
 class Node:
-  def __init__(self,examples):
-    self.attribute = None
-    self.children = {} #dict of value + rows
+  def __init__(self,examples,attribute=None):
+    self.examples=examples
+    self.attribute = attribute
+    self.children = [] #dict of value + rows
   #   self.isLeaf=False
   #   self.examples=[]
   #
@@ -13,5 +14,11 @@ class Node:
   #   if self.isLeaf==True:
   #       return True
   def addChild(self, Node):
-     self.children.update(Node)
+     self.children.append(Node)
+  def getAttribute(self):
+    return self.attribute
+  def getChildren(self):
+    return self.children
+  def getExamples(self):
+    return self.examples
 	# you may want to add additional fields here...

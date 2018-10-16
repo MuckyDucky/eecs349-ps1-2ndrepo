@@ -12,31 +12,31 @@ def ID3(examples, default):
 
 
   attr_to_split, gain = find_best_split(examples) #find best attribute to split on
-  root = Node(attr_to_split)
+  root = Node(examples,attr_to_split)
   if gain == 0:
     return Node(examples)
   else:
-    partitioned=partition(examples,attr_to_split)
-    for p in partitioned:
+    part_list = partition(examples,attr_to_split)
+    for p in part_list:
       root.addChild(Node(p))
-      ID3(p)
+    for child in root.getChildren():
+      ID3(child.examples,0)
+  for child in root.getChildren():
+    print(child.getExamples())
 
   return root
 
-
-
-
-  root = Node(attr_to_split) #root node will be based on that attribute
-  values = get_values_of_attr(attr_to_split) #get the values of that attribute in a set
-  for v in values: #for each value, add a child node of root that contains the splitted people
-    root.addChild(v,Node())
-
-  for childVal, childNode in root.children.items():
-    if childNode.isLeaf():
-        continue
-    childNode.addchild(ID3(partition(examples,childVal),0))
-
-  return root
+  # root = Node(attr_to_split) #root node will be based on that attribute
+  # values = get_values_of_attr(attr_to_split) #get the values of that attribute in a set
+  # for v in values: #for each value, add a child node of root that contains the splitted people
+  #   root.addChild(v,Node())
+  #
+  # for childVal, childNode in root.children.items():
+  #   if childNode.isLeaf():
+  #       continue
+  #   childNode.addchild(ID3(partition(examples,childVal),0))
+  #
+  # return root
 
 
 def prune(node, examples):
@@ -57,6 +57,16 @@ def evaluate(node, example):
   Takes in a tree and one example.  Returns the Class value that the tree
   assigns to the example.
   '''
+  if len(node.getChildren())==0:
+    return node.getExamples()[0]['Class'] ###Todo:fix!! check accuracy. needs testing
+
+  if example[node.getAttribute()] is not '?':
+    for child in node.getChildren():
+      if child[0][node.getAttribute] == example[node.getAttribute]:
+        for item in child:
+          evaluate(item,example)
+
+
 def partition(dataset,attr): #partitions data according to attr. returns list of partitioned dataset(list of lists)
 
   values = get_values_of_attr(dataset,attr)
@@ -97,19 +107,28 @@ def find_best_split(dataset): #return attribute, gain with best split in the cur
   best_gain  = 0
   best_attribute = None
   H_prior = entropy(dataset)
+  attr_list=get_attr_list(dataset)
+
+  for attr in attr_list:
+    attr_IG=IG(partition(dataset, attr), H_prior)
+    if attr_IG >= best_gain:
+      best_attribute,best_gain=attr,attr_IG
+
+  return best_attribute,best_gain
+
 
 def IG(listofparts,H_prior): #Todo: attributes should be in list/dict/set form
   currIG=H_prior
   total_length=0
   for l in listofparts:
     total_length+=len(l)
-  print("H_prior is " + str(H_prior))
-  print("listofparts is " + str(listofparts))
+  #print("H_prior is " + str(H_prior))
+  #print("listofparts is " + str(listofparts))
   for l in listofparts:
     p=float(len(l))/total_length
-    print("p is " + str(p))
+    #print("p is " + str(p))
     currIG-=p*entropy(l)
-  print("currIG is " + str(currIG))
+  #print("currIG is " + str(currIG))
   return currIG
 
 def entropy(dataset): #Todo: parameter type
@@ -130,5 +149,15 @@ def class_counts(dataset):
       else:
         counts[label] +=1
   return counts
+
+def count_attributes(dataset):
+  count = 0
+  for attr in dataset[0]:
+    if attr is not 'Class':
+      count +=1
+  return count
+
+def get_attr_list(dataset):
+  return [ attr for attr in dataset[0] if attr is not 'Class']
 
 
