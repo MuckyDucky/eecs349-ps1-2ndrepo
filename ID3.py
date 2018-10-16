@@ -1,0 +1,134 @@
+from node import Node
+import math
+
+
+def ID3(examples, default):
+  '''
+  Takes in an array of examples, and returns a tree (an instance of Node) 
+  trained on the examples.  Each example is a dictionary of attribute:value pairs,
+  and the target class variable is a special attribute with the name "Class".
+  Any missing attributes are denoted with a value of "?"
+  '''
+
+
+  attr_to_split, gain = find_best_split(examples) #find best attribute to split on
+  root = Node(attr_to_split)
+  if gain == 0:
+    return Node(examples)
+  else:
+    partitioned=partition(examples,attr_to_split)
+    for p in partitioned:
+      root.addChild(Node(p))
+      ID3(p)
+
+  return root
+
+
+
+
+  root = Node(attr_to_split) #root node will be based on that attribute
+  values = get_values_of_attr(attr_to_split) #get the values of that attribute in a set
+  for v in values: #for each value, add a child node of root that contains the splitted people
+    root.addChild(v,Node())
+
+  for childVal, childNode in root.children.items():
+    if childNode.isLeaf():
+        continue
+    childNode.addchild(ID3(partition(examples,childVal),0))
+
+  return root
+
+
+def prune(node, examples):
+  '''
+  Takes in a trained tree and a validation set of examples.  Prunes nodes in order
+  to improve accuracy on the validation data; the precise pruning strategy is up to you.
+  '''
+
+def test(node, examples):
+  '''
+  Takes in a trained tree and a test set of examples.  Returns the accuracy (fraction
+  of examples the tree classifies correctly).
+  '''
+
+
+def evaluate(node, example):
+  '''
+  Takes in a tree and one example.  Returns the Class value that the tree
+  assigns to the example.
+  '''
+def partition(dataset,attr): #partitions data according to attr. returns list of partitioned dataset(list of lists)
+
+  values = get_values_of_attr(dataset,attr)
+
+  listofpartitions = [] #listoflists
+  for v in values:
+    #print(v)
+    listtoappend =[]
+    for row in dataset:
+      if row[attr] == v:
+        listtoappend.append(row)
+    listofpartitions.append(listtoappend)
+
+
+  # partitioned=dict.fromkeys(values,[])
+  #
+  # for v,l in partitioned.items():
+  #   for row in dataset:
+  #     if row[attr]==v:
+  #       l.append(row)
+  # for row in dataset:
+  #   #if row[attr] in partitioned:
+  #   print(row[attr])
+  #   partitioned[1].append('match')
+  #   #partitioned[row[attr]].append('match')
+
+  return listofpartitions
+
+def get_values_of_attr(dataset, attr): #returns set of values of attr
+  list_of_values=[]
+  for row in dataset: #each row is a dict
+    list_of_values.append(row[attr])
+  return set(list_of_values)
+
+def find_best_split(dataset): #return attribute, gain with best split in the current example portion
+  #return best_gain, best_attribute
+  #try attributes, find the one with the best gain
+  best_gain  = 0
+  best_attribute = None
+  H_prior = entropy(dataset)
+
+def IG(listofparts,H_prior): #Todo: attributes should be in list/dict/set form
+  currIG=H_prior
+  total_length=0
+  for l in listofparts:
+    total_length+=len(l)
+  print("H_prior is " + str(H_prior))
+  print("listofparts is " + str(listofparts))
+  for l in listofparts:
+    p=float(len(l))/total_length
+    print("p is " + str(p))
+    currIG-=p*entropy(l)
+  print("currIG is " + str(currIG))
+  return currIG
+
+def entropy(dataset): #Todo: parameter type
+  counts = class_counts(dataset)
+  entropy = 0
+  for label in counts:
+    prob_lbl = counts[label] / float(len(dataset))
+    entropy += -prob_lbl * math.log(prob_lbl, 2)
+  return entropy
+
+def class_counts(dataset):
+  # returns dictionary that contains total count of each attribute
+  counts = {}
+  for row in dataset:
+      label = row['Class']
+      if label not in counts:
+        counts[label] = 1
+      else:
+        counts[label] +=1
+  return counts
+
+
