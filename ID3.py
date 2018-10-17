@@ -1,5 +1,6 @@
 from node import Node
 import math
+import copy
 
 
 def ID3(examples, default):
@@ -9,19 +10,31 @@ def ID3(examples, default):
   and the target class variable is a special attribute with the name "Class".
   Any missing attributes are denoted with a value of "?"
   '''
-
-
+  print("=======ID3 phase start")
+  print('current Node examples : ' + str(examples))
   attr_to_split, gain = find_best_split(examples) #find best attribute to split on
-  root = Node(examples,attr_to_split)
+  print('attr_to_split : ' + str(attr_to_split))
+  print('gain : ' + str(gain))
+  root = Node(examples, attr_to_split)
   #print(root.getExamples())
+
+  #todo: eval is not pointing to same node.
   if gain == 0:
+    print('children of this node : ' + str(root.getChildren()))
+
     return Node(examples)
   else:
+    print('node number : ' + str(root))
     part_list = partition(examples,attr_to_split)
+    print(part_list)
     for p in part_list:
-      root.addChild(Node(p))
-    for child in root.getChildren():
-      ID3(child.examples,0)
+      print('p is ' + str(p))
+      print('adding child for ' + str(p))
+      #root.addChild(Node(p))
+      root.addChild(ID3(p,0))
+    print('children of this node : ' + str(root.getChildren()))
+    #for child in root.getChildren():
+      #ID3(child.getExamples(),0)
   #for child in root.getChildren():
     #print(child.getExamples())
 
@@ -39,35 +52,32 @@ def test(node, examples):
   Takes in a trained tree and a test set of examples.  Returns the accuracy (fraction
   of examples the tree classifies correctly).
   '''
-  orig_ex_classes = [row['Class'] for row in examples]
-  test_data = [row for row in examples]
+  orig_ex = copy.deepcopy(examples)
+  test_data = copy.deepcopy(examples)
 
   tree = ID3(node.getExamples(), 0)
-  print_tree(tree)
+
+  #test_data[0].pop('Class')
 
   correct_cnt=0
-  print("test_data test : " + str(test_data[1]))
-
-  test_data[1].pop('Class')
-  print(evaluate(tree,test_data[1]))
-  # for i in range(len(test_data)):
-  #   test_data[i].pop('Class')
-  #   print("test data[i] : " + str(test_data[i]))
-  #   res = evaluate(tree, test_data[i])
-  #   #res = evaluate(tree, dict(a=1,b=0,c=0))
-  #   if res == orig_ex_classes[i]:
-  #     correct_cnt+=1
+  #print("test_data test : " + str(test_data[1]))
+  #print(evaluate(tree, test_data[0]))
+  #test_data[1].pop('Class')
+  #print(evaluate(tree,test_data[1]))
+  #evaluate(tree, dict(a=0,b=0,c=0) )
+  for i in range(len(test_data)):
+    test_data[i].pop('Class')
+    #print_tree(tree)
+    #print("testing example : " + str(test_data[i]))
+    res = evaluate(tree, test_data[i])
+    #res = evaluate(tree, dict(a=0,b=0,c=0))
+    if res == orig_ex[i]['Class']:
+      print('---->accurate!')
+      correct_cnt+=1
+    else:
+      print("---->not accurate!")
+  print("accuracy is : " + str(correct_cnt/len(test_data)))
   return correct_cnt/len(test_data)
-
-
-
-
-
-
-
-
-
-
 
   #evaluate examples without class and see if they match with its actual class
 
@@ -79,9 +89,22 @@ def evaluate(node, example):
   assigns to the example.
   '''
   #if len(node.getChildren())==0: #a no-split case. return the class of the example set
-  if node.isLeaf() == True: #get the mode class
+  if len(node.getChildren()) == 0: #get the mode class #and if attribute value matches
     #print("leaf:" + str(node.getExamples()))
+    #search if there is an exact match first
+    for item in node.getExamples():
+      if isSameRow(item,example):
+        print('fell at example : ' + str(example))
+
+        print('children : ' + str(node.getChildren()))
+        print('evaluate result : ' + str(item['Class']))
+        return item['Class']
+    # if not,
     class_count = count_classes(node.getExamples())
+    print('fell at example : ' + str(node.getExamples()))
+    print('node : ' + str(node))
+    print('children : ' + str(node.getChildren()))
+    print('evaluate result : ' + str(max(class_count, key=class_count.get)) )
     return max(class_count, key=class_count.get)
 
 
@@ -213,5 +236,13 @@ def print_tree(node, margin=''):
   margin+='-'
   for child in node.getChildren():
     print_tree(child,margin)
+
+def isSameRow(dict1, dict2):
+  for k,v in dict1.items():
+    if k is 'Class':
+      continue
+    if v != dict2[k]:
+      return False
+  return True
 
 

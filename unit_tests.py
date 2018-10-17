@@ -8,11 +8,14 @@ def testID3AndEvaluateJimin():
   data4 = [dict(a=1, b=0, Class=1), dict(a=0, b=1, Class=0)]
   data_t=[dict(a=1, b=0, c=0, Class=1), dict(a=1, b=1, c=0, Class=1),
   dict(a=0, b=0, c=0, Class=0), dict(a=0, b=1, c=0, Class=1)]
-
-  tree = ID3.ID3(data_t, 0)
+  data_tnt=[dict(a=1, b=0, c=0, Class=1), dict(a=1, b=1, c=0, Class=1),
+  dict(a=0, b=0, c=0, Class=0), dict(a=0, b=1, c=0, Class=1)]
+  #dict(a=0, b=0, c=1, Class=0), dict(a=0, b=1, c=1, Class=0)
+  tree = ID3.ID3(data_tnt, 0)
   ID3.print_tree(tree)
+  #ID3.print_tree(tree)
   if tree != None:
-    ans = ID3.evaluate(tree, dict(a=1, b=0, c=0))
+    ans = ID3.evaluate(tree, dict(a=0, b=0, c=1))
     print("ans : " + str(ans))
   else:
     print("ID3 test failed -- no tree returned")
@@ -52,6 +55,7 @@ def testID3AndTest():
   testData = [dict(a=1, b=0, c=1, Class=1), dict(a=1, b=1, c=1, Class=1), 
   dict(a=0, b=0, c=1, Class=0), dict(a=0, b=1, c=1, Class=0)]
   tree = ID3.ID3(trainData, 0)
+  ID3.print_tree(tree)
   fails = 0
   if tree != None:
     acc = ID3.test(tree, trainData)
