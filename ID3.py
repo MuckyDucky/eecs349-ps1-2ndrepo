@@ -13,7 +13,7 @@ def ID3(examples, default):
 
   attr_to_split, gain = find_best_split(examples) #find best attribute to split on
   root = Node(examples,attr_to_split)
-  print(root.getExamples())
+  #print(root.getExamples())
   if gain == 0:
     return Node(examples)
   else:
@@ -39,7 +39,35 @@ def test(node, examples):
   Takes in a trained tree and a test set of examples.  Returns the accuracy (fraction
   of examples the tree classifies correctly).
   '''
-  orig_ex = examples
+  orig_ex_classes = [row['Class'] for row in examples]
+  test_data = [row for row in examples]
+
+  tree = ID3(node.getExamples(), 0)
+  print_tree(tree)
+
+  correct_cnt=0
+  print("test_data test : " + str(test_data[1]))
+
+  test_data[1].pop('Class')
+  print(evaluate(tree,test_data[1]))
+  # for i in range(len(test_data)):
+  #   test_data[i].pop('Class')
+  #   print("test data[i] : " + str(test_data[i]))
+  #   res = evaluate(tree, test_data[i])
+  #   #res = evaluate(tree, dict(a=1,b=0,c=0))
+  #   if res == orig_ex_classes[i]:
+  #     correct_cnt+=1
+  return correct_cnt/len(test_data)
+
+
+
+
+
+
+
+
+
+
 
   #evaluate examples without class and see if they match with its actual class
 
@@ -52,7 +80,7 @@ def evaluate(node, example):
   '''
   #if len(node.getChildren())==0: #a no-split case. return the class of the example set
   if node.isLeaf() == True: #get the mode class
-    print("leaf:" + str(node.getExamples()))
+    #print("leaf:" + str(node.getExamples()))
     class_count = count_classes(node.getExamples())
     return max(class_count, key=class_count.get)
 
@@ -177,7 +205,13 @@ def count_classes(dataset): #returns a dictionary that keeps count of the possib
   return count_dict
 
 
-
-
+def print_tree(node, margin=''):
+  print(margin +  str(node.getExamples()))
+  if node.isLeaf() == True:
+    print('----->leaf')
+    return 0
+  margin+='-'
+  for child in node.getChildren():
+    print_tree(child,margin)
 
 
