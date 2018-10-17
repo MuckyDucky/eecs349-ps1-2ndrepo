@@ -13,6 +13,7 @@ def ID3(examples, default):
 
   attr_to_split, gain = find_best_split(examples) #find best attribute to split on
   root = Node(examples,attr_to_split)
+  print(root.getExamples())
   if gain == 0:
     return Node(examples)
   else:
@@ -21,8 +22,8 @@ def ID3(examples, default):
       root.addChild(Node(p))
     for child in root.getChildren():
       ID3(child.examples,0)
-  for child in root.getChildren():
-    print(child.getExamples())
+  #for child in root.getChildren():
+    #print(child.getExamples())
 
   return root
 
@@ -38,6 +39,10 @@ def test(node, examples):
   Takes in a trained tree and a test set of examples.  Returns the accuracy (fraction
   of examples the tree classifies correctly).
   '''
+  orig_ex = examples
+
+  #evaluate examples without class and see if they match with its actual class
+
 
 
 def evaluate(node, example):
@@ -46,12 +51,17 @@ def evaluate(node, example):
   assigns to the example.
   '''
   #if len(node.getChildren())==0: #a no-split case. return the class of the example set
-  if node.isLeaf() == True:
-    print(node.getExamples()[0]['Class'])
-    return node.getExamples()[0]['Class'] ###Todo:fix!! check accuracy. needs testing
+  if node.isLeaf() == True: #get the mode class
+    print("leaf:" + str(node.getExamples()))
+    class_count = count_classes(node.getExamples())
+    return max(class_count, key=class_count.get)
+
+
+    #print(node.getExamples()[0]['Class'])
+    #return node.getExamples()[0]['Class'] ###Todo:fix!! check accuracy. needs testing
 
   if example[node.getAttribute()] is not '?':
-    print("node examples : " + str(node.getExamples()))
+    #print("node examples : " + str(node.getExamples()))
     for child in node.getChildren():
       #print("iterating on child that has : " +  str(child.getExamples()))
       #print("child.getExamples()[0] = " + str(child.getExamples()[0]))
@@ -155,5 +165,19 @@ def count_attributes(dataset):
 
 def get_attr_list(dataset):
   return [ attr for attr in dataset[0] if attr is not 'Class']
+
+def count_classes(dataset): #returns a dictionary that keeps count of the possible outputs.
+  count_dict={}
+  for row in dataset:
+    theclass = row['Class']
+    if theclass in count_dict:
+      count_dict[theclass] +=1
+    else:
+      count_dict[theclass] = 1
+  return count_dict
+
+
+
+
 
 

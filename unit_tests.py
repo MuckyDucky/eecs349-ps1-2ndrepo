@@ -1,14 +1,14 @@
 import ID3, parse, random
 
 def testID3AndEvaluateJimin():
-  dataj = [dict(a=2, b=0, Class=1), dict(a=1, b=0, Class=1), dict(a=1, b=1, Class=0)]
+  dataj = [dict(a=2, b=0, c=1, Class=2), dict(a=1, b=0, c=2, Class=3), dict(a=1, b=1, c=1, Class=1), dict(a=2,b=0,c=2, Class=4), dict(a=3,b=1,c=2, Class=3)]
   data1 = [dict(a=1, b=0, Class=1), dict(a=1, b=1, Class=1)]
   data2 = [dict(a=1, b=0, Class=1), dict(a=1, b=1, Class=0)]
   data3 = [dict(a=1, b=0, Class=2)] #one node tre
   data4 = [dict(a=1, b=0, Class=1), dict(a=0, b=1, Class=0)]
   tree = ID3.ID3(dataj, 0)
   if tree != None:
-    ans = ID3.evaluate(tree, dict(a=2, b=2))
+    ans = ID3.evaluate(tree, dict(a=2, b=0, c=1))
     print("ans : " + str(ans))
   else:
     print("ID3 test failed -- no tree returned")
@@ -119,7 +119,8 @@ def main():
   #print(ID3.find_best_split(data))
   #print(ID3.ID3(data,0))
   #testID3AndEvaluate()
-  testID3AndEvaluateJimin()
+  #testID3AndEvaluateJimin()
+  testPruning()
 
 
 
