@@ -4,7 +4,7 @@ class Node:
   def __init__(self,examples,attribute=None):
     self.examples=examples
     self.attribute = attribute
-    self.children = [] #dict of value + rows
+    self.children = [] #list of list of dict of value + rows
   #   self.isLeaf=False
   #   self.examples=[]
   #
@@ -21,4 +21,6 @@ class Node:
     return self.children
   def getExamples(self):
     return self.examples
+  def isLeaf(self):
+    return (len(self.children)==0) and self.attribute==None
 	# you may want to add additional fields here...

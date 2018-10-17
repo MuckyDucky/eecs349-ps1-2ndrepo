@@ -26,18 +26,6 @@ def ID3(examples, default):
 
   return root
 
-  # root = Node(attr_to_split) #root node will be based on that attribute
-  # values = get_values_of_attr(attr_to_split) #get the values of that attribute in a set
-  # for v in values: #for each value, add a child node of root that contains the splitted people
-  #   root.addChild(v,Node())
-  #
-  # for childVal, childNode in root.children.items():
-  #   if childNode.isLeaf():
-  #       continue
-  #   childNode.addchild(ID3(partition(examples,childVal),0))
-  #
-  # return root
-
 
 def prune(node, examples):
   '''
@@ -57,14 +45,22 @@ def evaluate(node, example):
   Takes in a tree and one example.  Returns the Class value that the tree
   assigns to the example.
   '''
-  if len(node.getChildren())==0:
+  #if len(node.getChildren())==0: #a no-split case. return the class of the example set
+  if node.isLeaf() == True:
+    print(node.getExamples()[0]['Class'])
     return node.getExamples()[0]['Class'] ###Todo:fix!! check accuracy. needs testing
 
   if example[node.getAttribute()] is not '?':
+    print("node examples : " + str(node.getExamples()))
     for child in node.getChildren():
-      if child[0][node.getAttribute] == example[node.getAttribute]:
-        for item in child:
-          evaluate(item,example)
+      #print("iterating on child that has : " +  str(child.getExamples()))
+      #print("child.getExamples()[0] = " + str(child.getExamples()[0]))
+      if child.getExamples()[0][node.getAttribute()] == example[node.getAttribute()]:
+      #check if value of splitted attribute matches
+        #if it matches,
+
+        #for item in child:
+        return evaluate(child,example)
 
 
 def partition(dataset,attr): #partitions data according to attr. returns list of partitioned dataset(list of lists)
