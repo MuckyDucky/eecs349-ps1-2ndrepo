@@ -10,33 +10,27 @@ def ID3(examples, default):
   and the target class variable is a special attribute with the name "Class".
   Any missing attributes are denoted with a value of "?"
   '''
-  print("=======ID3 phase start")
-  print('current Node examples : ' + str(examples))
+  # print("=======ID3 phase start")
+  # print('current Node examples : ' + str(examples))
   attr_to_split, gain = find_best_split(examples) #find best attribute to split on
   print('attr_to_split : ' + str(attr_to_split))
-  print('gain : ' + str(gain))
+  # print('gain : ' + str(gain))
   root = Node(examples, attr_to_split)
   #print(root.getExamples())
 
-  #todo: eval is not pointing to same node.
+  #todo: eval is not pointing to same node. -> solved
   if gain == 0:
-    print('children of this node : ' + str(root.getChildren()))
+    # print('children of this node : ' + str(root.getChildren()))
 
     return Node(examples)
   else:
-    print('node number : ' + str(root))
+    #print('node number : ' + str(root))
     part_list = partition(examples,attr_to_split)
-    print(part_list)
+    #print(part_list)
     for p in part_list:
-      print('p is ' + str(p))
-      print('adding child for ' + str(p))
-      #root.addChild(Node(p))
+
       root.addChild(ID3(p,0))
-    print('children of this node : ' + str(root.getChildren()))
-    #for child in root.getChildren():
-      #ID3(child.getExamples(),0)
-  #for child in root.getChildren():
-    #print(child.getExamples())
+
 
   return root
 
@@ -46,6 +40,38 @@ def prune(node, examples):
   Takes in a trained tree and a validation set of examples.  Prunes nodes in order
   to improve accuracy on the validation data; the precise pruning strategy is up to you.
   '''
+  if hasGC(node):
+    for child in node.getChildren():
+      themode=mode_class(child.getExamples())
+      print('themode is : ' + str(themode))
+      subset = getSubset(examples, node.getAttribute(), themode)
+      print('subset is ' + str(subset))
+      prune(child,subset)
+  else:
+    #print('node is a leaf. examples : ' + str(node.getExamples()))
+    preprune_acc = test(node,examples)
+    temp_children=node.getChildren()
+    temp_attr = node.getAttribute()
+    node.removeAllChildren()
+    node.attribute=None
+    postprune_acc = test(node,examples)
+    if preprune_acc > postprune_acc: #noprune
+      node.children = temp_children
+      node.attribute=temp_attr
+    else:#prune
+      # nodemode=mode_class(node.getExamples())
+      # for instance in node.getExamples():
+      #   if instance['Class'] != nodemode:
+      #     node.examples.remove(instance)
+
+      print('pruned ')
+
+def getSubset(examples,attr,val):
+  subset = []
+  for example in examples:
+    if example[attr] == val:
+      subset.append(example)
+  return subset
 
 def test(node, examples):
   '''
@@ -72,10 +98,10 @@ def test(node, examples):
     res = evaluate(tree, test_data[i])
     #res = evaluate(tree, dict(a=0,b=0,c=0))
     if res == orig_ex[i]['Class']:
-      print('---->accurate!')
+      #print('---->accurate!')
       correct_cnt+=1
-    else:
-      print("---->not accurate!")
+    # else:
+    #   print("---->not accurate!")
   print("accuracy is : " + str(correct_cnt/len(test_data)))
   return correct_cnt/len(test_data)
 
@@ -89,22 +115,23 @@ def evaluate(node, example):
   assigns to the example.
   '''
   #if len(node.getChildren())==0: #a no-split case. return the class of the example set
-  if len(node.getChildren()) == 0: #get the mode class #and if attribute value matches
+  #if len(node.getChildren()) == 0: #get the mode class #and if attribute value matches
+  if node.isLeaf():
     #print("leaf:" + str(node.getExamples()))
     #search if there is an exact match first
-    for item in node.getExamples():
-      if isSameRow(item,example):
-        print('fell at example : ' + str(example))
-
-        print('children : ' + str(node.getChildren()))
-        print('evaluate result : ' + str(item['Class']))
-        return item['Class']
-    # if not,
+    # for item in node.getExamples():
+    #   if isSameRow(item,example):
+    #     print('fell at example : ' + str(example))
+	#
+    #     print('children : ' + str(node.getChildren()))
+    #     print('evaluate result : ' + str(item['Class']))
+    #     return item['Class']
+    # # if not,
     class_count = count_classes(node.getExamples())
-    print('fell at example : ' + str(node.getExamples()))
-    print('node : ' + str(node))
-    print('children : ' + str(node.getChildren()))
-    print('evaluate result : ' + str(max(class_count, key=class_count.get)) )
+    # print('fell at example : ' + str(node.getExamples()))
+    # print('node : ' + str(node))
+    # print('children : ' + str(node.getChildren()))
+    # print('evaluate result : ' + str(max(class_count, key=class_count.get)) )
     return max(class_count, key=class_count.get)
 
 
@@ -231,7 +258,7 @@ def count_classes(dataset): #returns a dictionary that keeps count of the possib
 def print_tree(node, margin=''):
   print(margin +  str(node.getExamples()))
   if node.isLeaf() == True:
-    print('----->leaf')
+    print('----->leaf.') #parent is ' + str(node.parent.getExamples()))
     return 0
   margin+='-'
   for child in node.getChildren():
@@ -245,4 +272,34 @@ def isSameRow(dict1, dict2):
       return False
   return True
 
+def mode_class(examples): #returns the mode Class among examples.
+  class_count = count_classes(examples)
+  return max(class_count, key=class_count.get)
 
+def pruneworthy(node, examples): #todo: dsf
+  if len(examples)==0:
+    return True
+
+  correct = 0
+  for row in examples:
+    if row['Class'] == mode_class(examples):
+      correct += 1
+
+  if float(correct)/len(examples) >= test(node,examples):
+      return True
+  return False
+
+def hasGC(node):
+  for child in node.getChildren():
+    if len(child.getChildren()) > 0:
+      return True
+  return False
+def subset(examples, label):
+  subsets = {}
+
+  for row in examples:
+    if not row[label] in subsets.keys():
+      subsets[row[label]] = [row]
+    else:
+      subsets[row[label]].append(row)
+  return subsets

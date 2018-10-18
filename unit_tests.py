@@ -48,6 +48,32 @@ def testPruning():
   else:
     print("pruning test failed -- no tree returned.")
 
+def testPruningJimin():
+  # data = [dict(a=1, b=1, c=1, Class=0), dict(a=1, b=0, c=0, Class=0), dict(a=0, b=1, c=0, Class=1), dict(a=0, b=0, c=0, Class=1), dict(a=0, b=0, c=1, Class=0)]
+  # validationData = [dict(a=0, b=0, c=1, Class=1)]
+  data = [dict(a=0, b=1, c=1, d=0, Class=1), dict(a=0, b=0, c=1, d=0, Class=0), dict(a=0, b=1, c=0, d=0, Class=1), dict(a=1, b=0, c=1, d=0, Class=0), dict(a=1, b=1, c=0, d=0, Class=0), dict(a=1, b=1, c=0, d=1, Class=0), dict(a=1, b=1, c=1, d=0, Class=0)]
+  validationData = [dict(a=0, b=0, c=1, d=0, Class=1), dict(a=1, b=1, c=1, d=1, Class = 0)]
+  tree = ID3.ID3(data, 0)
+
+
+  print("========tree before pruning")
+  ID3.print_tree(tree)
+  ID3.test(tree, validationData)
+
+  ID3.prune(tree, validationData)
+
+  print("=========tree after pruning")
+  ID3.print_tree(tree)
+  ID3.test(tree, validationData)
+  if tree != None:
+    ans = ID3.evaluate(tree, dict(a=0, b=0, c=1, d=0))
+    if ans != 1:
+      print("pruning test failed.")
+    else:
+      print("pruning test succeeded.")
+  else:
+    print("pruning test failed -- no tree returned.")
+
 
 def testID3AndTest():
   trainData = [dict(a=1, b=0, c=0, Class=1), dict(a=1, b=1, c=0, Class=1), 
@@ -76,6 +102,25 @@ def testID3AndTest():
       print("testID3AndTest succeeded.")
   else:
     print("testID3andTest failed -- no tree returned.")	
+
+def testID3AndTestJimin():
+  trainData = [dict(a=1, b=0, c=0, Class=1), dict(a=1, b=1, c=0, Class=1),
+  dict(a=0, b=0, c=0, Class=0), dict(a=0, b=1, c=0, Class=1)]
+  testData = [dict(a=1, b=0, c=1, Class=1), dict(a=1, b=1, c=1, Class=1),
+  dict(a=0, b=0, c=1, Class=0), dict(a=0, b=1, c=1, Class=0)]
+  data = [dict(a=0, b=1, c=1, d=0, Class=1), dict(a=0, b=0, c=1, d=0, Class=0), dict(a=0, b=1, c=0, d=0, Class=1),
+          dict(a=1, b=0, c=1, d=0, Class=0), dict(a=1, b=1, c=0, d=0, Class=0), dict(a=1, b=1, c=0, d=1, Class=0),
+          dict(a=1, b=1, c=1, d=0, Class=0)]
+  validationData = [dict(a=0, b=0, c=1, d=0, Class=1), dict(a=1, b=1, c=1, d=1, Class=0)]
+  tree = ID3.ID3(data, 0)
+  ID3.print_tree(tree)
+  fails = 0
+  if tree != None:
+    acc = ID3.test(tree, validationData)
+    print('acc = ' + str(acc))
+  else:
+    print("testID3andTest failed -- no tree returned.")
+
 
 # inFile - string location of the house data file
 def testPruningOnHouseData(inFile):
@@ -129,7 +174,12 @@ def main():
   #testID3AndEvaluate()
   #testID3AndEvaluateJimin()
   #testPruning()
-  testID3AndTest()
+  #testPruningJimin()
+  #testID3AndTest()
+  #testID3AndTestJimin()
+  testPruningOnHouseData("house_votes_84.data")
+
+  #print(ID3.getSubset(data,'b',0))
 
 
 

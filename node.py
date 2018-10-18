@@ -5,6 +5,8 @@ class Node:
     self.examples=examples
     self.attribute = attribute
     self.children = [] #list of list of dict of value + rows
+    self.parent=None
+    self.traversed=False
   #   self.isLeaf=False
   #   self.examples=[]
   #
@@ -15,6 +17,9 @@ class Node:
   #       return True
   def addChild(self, Node):
      self.children.append(Node)
+     self.children[-1].parent=self
+  def removeAllChildren(self):
+    self.children = []
   def getAttribute(self):
     return self.attribute
   def getChildren(self):
