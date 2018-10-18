@@ -4,7 +4,6 @@
     <list default="true" id="d97ec9d3-e941-40ff-aee9-3d15d1b93bd7" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ID3.py" beforeDir="false" afterPath="$PROJECT_DIR$/ID3.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/node.py" beforeDir="false" afterPath="$PROJECT_DIR$/node.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/unit_tests.py" beforeDir="false" afterPath="$PROJECT_DIR$/unit_tests.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -14,7 +13,7 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="CoverageDataManager">
-    <SUITE FILE_PATH="coverage/PS1$unit_tests.coverage" NAME="unit_tests Coverage Results" MODIFIED="1539833901924" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/PS1$unit_tests.coverage" NAME="unit_tests Coverage Results" MODIFIED="1539889083806" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
   <component name="FUSProjectUsageTrigger">
     <session id="2050700778">
@@ -41,14 +40,14 @@
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="py" value="20023" />
-          <entry key="txt" value="74" />
+          <entry key="py" value="22305" />
+          <entry key="txt" value="95" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="PLAIN_TEXT" value="74" />
-          <entry key="Python" value="20023" />
+          <entry key="PLAIN_TEXT" value="95" />
+          <entry key="Python" value="22305" />
         </counts>
       </usages-collector>
     </session>
@@ -62,21 +61,6 @@
               <provider selected="true" editor-type-id="text-editor">
                 <state relative-caret-position="440">
                   <caret line="20" selection-start-line="20" selection-end-line="20" />
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/ID3.py">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="5940">
-                  <caret line="283" column="22" selection-start-line="283" selection-start-column="22" selection-end-line="283" selection-end-column="22" />
-                  <folding>
-                    <element signature="e#0#21#0" expanded="true" />
-                    <marker date="1539833738792" expanded="true" signature="47:48" ph="..." />
-                    <marker date="1539833738792" expanded="true" signature="5841:6481" ph="..." />
-                    <marker date="1539833738792" expanded="true" signature="6509:6894" ph="..." />
-                  </folding>
                 </state>
               </provider>
             </entry>
@@ -105,20 +89,38 @@
               </provider>
             </entry>
           </file>
-          <file pinned="false" current-in-tab="true">
+          <file pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/house_votes_84.data">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="110">
-                  <caret line="5" column="40" selection-start-line="5" selection-start-column="40" selection-end-line="5" selection-end-column="40" />
+                <state>
+                  <caret column="342" selection-start-column="320" selection-end-column="342" />
                 </state>
               </provider>
             </entry>
           </file>
           <file pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/ID3.py">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="-2486">
+                  <caret line="34" column="28" lean-forward="true" selection-start-line="34" selection-start-column="28" selection-end-line="34" selection-end-column="28" />
+                  <folding>
+                    <element signature="e#0#21#0" expanded="true" />
+                    <marker date="1539887204569" expanded="true" signature="62:63" ph="..." />
+                    <marker date="1539887204569" expanded="true" signature="1031:1293" ph="..." />
+                    <marker date="1539887204569" expanded="true" signature="1332:1335" ph="..." />
+                    <marker date="1539887204569" expanded="true" signature="1332:1343" ph="..." />
+                    <marker date="1539887204569" expanded="true" signature="4405:4958" ph="..." />
+                    <marker date="1539887204569" expanded="true" signature="4986:5371" ph="..." />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/unit_tests.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="118">
-                  <caret line="179" column="26" selection-start-line="179" selection-start-column="26" selection-end-line="179" selection-end-column="26" />
+                <state relative-caret-position="59">
+                  <caret line="187" column="27" selection-start-line="187" selection-start-column="27" selection-end-line="187" selection-end-column="27" />
                   <folding>
                     <element signature="e#60#1009#0" />
                     <element signature="e#1039#1337#0" />
@@ -138,16 +140,20 @@
           <file pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/ID3.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="204">
-                  <caret line="156" lean-forward="true" selection-start-line="156" selection-end-line="156" />
+                <state relative-caret-position="213">
+                  <caret line="138" lean-forward="true" selection-start-line="138" selection-end-line="138" />
                   <folding>
                     <element signature="e#0#21#0" expanded="true" />
-                    <marker date="1539833738792" expanded="true" signature="47:48" ph="..." />
-                    <marker date="1539833738792" expanded="true" signature="2210:2311" ph="..." />
-                    <marker date="1539833738792" expanded="true" signature="5841:6481" ph="..." />
-                    <marker date="1539833738792" expanded="true" signature="6509:6894" ph="..." />
-                    <marker date="1539833738792" expanded="true" signature="8763:8869" ph="..." />
-                    <marker date="1539833738792" expanded="true" signature="8897:8900" ph="..." />
+                    <marker date="1539887204569" expanded="true" signature="62:63" ph="..." />
+                    <marker date="1539887204569" expanded="true" signature="1031:1293" ph="..." />
+                    <marker date="1539887204569" expanded="true" signature="1332:1335" ph="..." />
+                    <marker date="1539887204569" expanded="true" signature="1332:1343" ph="..." />
+                    <marker date="1539887204569" expanded="true" signature="1364:1427" ph="..." />
+                    <marker date="1539887204569" expanded="true" signature="2433:2534" ph="..." />
+                    <marker date="1539887204569" expanded="true" signature="4405:4958" ph="..." />
+                    <marker date="1539887204569" expanded="true" signature="4986:5371" ph="..." />
+                    <marker date="1539887204569" expanded="true" signature="7290:7396" ph="..." />
+                    <marker date="1539887204569" expanded="true" signature="7424:7427" ph="..." />
                   </folding>
                 </state>
               </provider>
@@ -167,13 +173,19 @@
       <find>ID3.test</find>
       <find>def prunewort</find>
       <find>testpru</find>
-      <find>def prune</find>
       <find>testpruningjimin</find>
       <find>getsubset</find>
-      <find>prune</find>
       <find>&quot;?&quot;</find>
-      <find>def test</find>
+      <find>mode</find>
+      <find>'class'</find>
+      <find>prune</find>
+      <find>def eval</find>
       <find>partition</find>
+      <find>def prune</find>
+      <find>id3</find>
+      <find>def test</find>
+      <find>export-administration-</find>
+      <find>find_best</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -300,7 +312,14 @@
       <option name="project" value="LOCAL" />
       <updated>1539805431773</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="second last commit">
+      <created>1539834447320</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1539834447320</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TodoView">
@@ -321,7 +340,7 @@
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.3328841" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.4218329" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -374,7 +393,8 @@
     <MESSAGE value="1017 0929 commit" />
     <MESSAGE value="1017 1139 commit" />
     <MESSAGE value="1017 1443 commit" />
-    <option name="LAST_COMMIT_MESSAGE" value="1017 1443 commit" />
+    <MESSAGE value="second last commit" />
+    <option name="LAST_COMMIT_MESSAGE" value="second last commit" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -420,10 +440,17 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/house_votes_84.data">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret column="342" selection-start-column="320" selection-end-column="342" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/unit_tests.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="118">
-          <caret line="179" column="26" selection-start-line="179" selection-start-column="26" selection-end-line="179" selection-end-column="26" />
+        <state relative-caret-position="59">
+          <caret line="187" column="27" selection-start-line="187" selection-start-column="27" selection-end-line="187" selection-end-column="27" />
           <folding>
             <element signature="e#60#1009#0" />
             <element signature="e#1039#1337#0" />
@@ -435,25 +462,22 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/house_votes_84.data">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="110">
-          <caret line="5" column="40" selection-start-line="5" selection-start-column="40" selection-end-line="5" selection-end-column="40" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/ID3.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="204">
-          <caret line="156" lean-forward="true" selection-start-line="156" selection-end-line="156" />
+        <state relative-caret-position="213">
+          <caret line="138" lean-forward="true" selection-start-line="138" selection-end-line="138" />
           <folding>
             <element signature="e#0#21#0" expanded="true" />
-            <marker date="1539833738792" expanded="true" signature="47:48" ph="..." />
-            <marker date="1539833738792" expanded="true" signature="2210:2311" ph="..." />
-            <marker date="1539833738792" expanded="true" signature="5841:6481" ph="..." />
-            <marker date="1539833738792" expanded="true" signature="6509:6894" ph="..." />
-            <marker date="1539833738792" expanded="true" signature="8763:8869" ph="..." />
-            <marker date="1539833738792" expanded="true" signature="8897:8900" ph="..." />
+            <marker date="1539887204569" expanded="true" signature="62:63" ph="..." />
+            <marker date="1539887204569" expanded="true" signature="1031:1293" ph="..." />
+            <marker date="1539887204569" expanded="true" signature="1332:1335" ph="..." />
+            <marker date="1539887204569" expanded="true" signature="1332:1343" ph="..." />
+            <marker date="1539887204569" expanded="true" signature="1364:1427" ph="..." />
+            <marker date="1539887204569" expanded="true" signature="2433:2534" ph="..." />
+            <marker date="1539887204569" expanded="true" signature="4405:4958" ph="..." />
+            <marker date="1539887204569" expanded="true" signature="4986:5371" ph="..." />
+            <marker date="1539887204569" expanded="true" signature="7290:7396" ph="..." />
+            <marker date="1539887204569" expanded="true" signature="7424:7427" ph="..." />
           </folding>
         </state>
       </provider>

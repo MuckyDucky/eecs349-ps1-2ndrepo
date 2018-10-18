@@ -1,46 +1,69 @@
 from node import Node
 import math
 import copy
+import random
+
 
 
 def ID3(examples, default):
+  print("ID3")
   '''
   Takes in an array of examples, and returns a tree (an instance of Node) 
   trained on the examples.  Each example is a dictionary of attribute:value pairs,
   and the target class variable is a special attribute with the name "Class".
   Any missing attributes are denoted with a value of "?"
   '''
-  # print("=======ID3 phase start")
-  # print('current Node examples : ' + str(examples))
+  default = 0
   attr_to_split, gain = find_best_split(examples) #find best attribute to split on
   print('attr_to_split : ' + str(attr_to_split))
-  # print('gain : ' + str(gain))
   root = Node(examples, attr_to_split)
-  #print(root.getExamples())
 
   #todo: eval is not pointing to same node. -> solved
   if gain == 0:
-    # print('children of this node : ' + str(root.getChildren()))
 
     return Node(examples)
   else:
-    #print('node number : ' + str(root))
     part_list = partition(examples,attr_to_split)
-    #print(part_list)
     for p in part_list:
-
+      for instance in p:
+        if '?' in instance.values():
+          qkey=find_key(instance, '?')
+          instance[qkey]=nodemode(p,qkey)
       root.addChild(ID3(p,0))
-
-
   return root
 
+def nodemode(examples,attr):
+  tracker = {}
+  assigners = ['y','n']
+  for instance in examples:
+    if instance[attr] not in tracker:
+      tracker[instance[attr]] = 1
+    else:
+      tracker[instance[attr]] += 1
+  mode = max(tracker, key=tracker.get)
+  if mode is '?':
+    return assigners[random.uniform(0,1)]
+  return mode
+
+
+
+def ID3_real(filled_examples, default):
+  pass
+
+
+
+def find_key(dict,v):
+  for k,v in dict.items():
+    if dict[k]==v:
+      return k
 
 def prune(node, examples):
+  print("prune function")
   '''
   Takes in a trained tree and a validation set of examples.  Prunes nodes in order
   to improve accuracy on the validation data; the precise pruning strategy is up to you.
   '''
-  if hasGC(node):
+  if hasGC(node): #if node has children of children
     for child in node.getChildren():
       themode=mode_class(child.getExamples())
       print('themode is : ' + str(themode))
@@ -48,22 +71,18 @@ def prune(node, examples):
       print('subset is ' + str(subset))
       prune(child,subset)
   else:
-    #print('node is a leaf. examples : ' + str(node.getExamples()))
     preprune_acc = test(node,examples)
+    if preprune_acc == None:
+      return 0
     temp_children=node.getChildren()
     temp_attr = node.getAttribute()
     node.removeAllChildren()
     node.attribute=None
     postprune_acc = test(node,examples)
-    if preprune_acc > postprune_acc: #noprune
+    if preprune_acc > postprune_acc: #no prune
       node.children = temp_children
       node.attribute=temp_attr
-    else:#prune
-      # nodemode=mode_class(node.getExamples())
-      # for instance in node.getExamples():
-      #   if instance['Class'] != nodemode:
-      #     node.examples.remove(instance)
-
+    else: #prune
       print('pruned ')
 
 def getSubset(examples,attr,val):
@@ -81,65 +100,36 @@ def test(node, examples):
   orig_ex = copy.deepcopy(examples)
   test_data = copy.deepcopy(examples)
 
+  if len(test_data)==0:
+    return None
+
   tree = ID3(node.getExamples(), 0)
 
-  #test_data[0].pop('Class')
-
   correct_cnt=0
-  #print("test_data test : " + str(test_data[1]))
-  #print(evaluate(tree, test_data[0]))
-  #test_data[1].pop('Class')
-  #print(evaluate(tree,test_data[1]))
-  #evaluate(tree, dict(a=0,b=0,c=0) )
+
   for i in range(len(test_data)):
     test_data[i].pop('Class')
-    #print_tree(tree)
-    #print("testing example : " + str(test_data[i]))
+    print(test_data[i])
     res = evaluate(tree, test_data[i])
-    #res = evaluate(tree, dict(a=0,b=0,c=0))
     if res == orig_ex[i]['Class']:
-      #print('---->accurate!')
       correct_cnt+=1
-    # else:
-    #   print("---->not accurate!")
+
   print("accuracy is : " + str(correct_cnt/len(test_data)))
   return correct_cnt/len(test_data)
-
-  #evaluate examples without class and see if they match with its actual class
-
-
 
 def evaluate(node, example):
   '''
   Takes in a tree and one example.  Returns the Class value that the tree
   assigns to the example.
   '''
-  #if len(node.getChildren())==0: #a no-split case. return the class of the example set
-  #if len(node.getChildren()) == 0: #get the mode class #and if attribute value matches
   if node.isLeaf():
-    #print("leaf:" + str(node.getExamples()))
-    #search if there is an exact match first
-    # for item in node.getExamples():
-    #   if isSameRow(item,example):
-    #     print('fell at example : ' + str(example))
-	#
-    #     print('children : ' + str(node.getChildren()))
-    #     print('evaluate result : ' + str(item['Class']))
-    #     return item['Class']
-    # # if not,
+
     class_count = count_classes(node.getExamples())
-    # print('fell at example : ' + str(node.getExamples()))
-    # print('node : ' + str(node))
-    # print('children : ' + str(node.getChildren()))
-    # print('evaluate result : ' + str(max(class_count, key=class_count.get)) )
     return max(class_count, key=class_count.get)
 
-
-    #print(node.getExamples()[0]['Class'])
-    #return node.getExamples()[0]['Class'] ###Todo:fix!! check accuracy. needs testing
-
+  #print(node.getAttribute())
+  #print(node.getExamples())
   if example[node.getAttribute()] is not '?':
-    #print("node examples : " + str(node.getExamples()))
     for child in node.getChildren():
       #print("iterating on child that has : " +  str(child.getExamples()))
       #print("child.getExamples()[0] = " + str(child.getExamples()[0]))
@@ -154,7 +144,7 @@ def evaluate(node, example):
 def partition(dataset,attr): #partitions data according to attr. returns list of partitioned dataset(list of lists)
 
   values = get_values_of_attr(dataset,attr)
-
+  yorn =['y','n']
   listofpartitions = [] #listoflists
   for v in values:
     #print(v)
@@ -162,20 +152,10 @@ def partition(dataset,attr): #partitions data according to attr. returns list of
     for row in dataset:
       if row[attr] == v:
         listtoappend.append(row)
+
+
     listofpartitions.append(listtoappend)
 
-
-  # partitioned=dict.fromkeys(values,[])
-  #
-  # for v,l in partitioned.items():
-  #   for row in dataset:
-  #     if row[attr]==v:
-  #       l.append(row)
-  # for row in dataset:
-  #   #if row[attr] in partitioned:
-  #   print(row[attr])
-  #   partitioned[1].append('match')
-  #   #partitioned[row[attr]].append('match')
 
   return listofpartitions
 
@@ -186,8 +166,6 @@ def get_values_of_attr(dataset, attr): #returns set of values of attr
   return set(list_of_values)
 
 def find_best_split(dataset): #return attribute, gain with best split in the current example portion
-  #return best_gain, best_attribute
-  #try attributes, find the one with the best gain
   best_gain  = 0
   best_attribute = None
   H_prior = entropy(dataset)
@@ -242,7 +220,11 @@ def count_attributes(dataset):
   return count
 
 def get_attr_list(dataset):
-  return [ attr for attr in dataset[0] if attr is not 'Class']
+  attr_list=[]
+  for attr in dataset[0]:
+    if attr != 'Class':
+      attr_list.append(attr)
+  return attr_list
 
 def count_classes(dataset): #returns a dictionary that keeps count of the possible outputs.
   count_dict={}

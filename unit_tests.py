@@ -123,17 +123,21 @@ def testID3AndTestJimin():
 
 
 # inFile - string location of the house data file
-def testPruningOnHouseData(inFile):
+def testPruningOnHouseData(inFile,idx):
   withPruning = []
   withoutPruning = []
   data = parse.parse(inFile)
+
   for i in range(100):
+    print('============================= i : ' + str(i))
     random.shuffle(data)
-    train = data[:len(data)//2]
+    train = data[:idx]
+    #train = data[:len(data)//2]
     valid = data[len(data)//2:3*len(data)//4]
     test = data[3*len(data)//4:]
   
     tree = ID3.ID3(train, 'democrat')
+    ID3.print_tree(tree)
     acc = ID3.test(tree, train)
     print("training accuracy: ",acc)
     acc = ID3.test(tree, valid)
@@ -156,7 +160,8 @@ def testPruningOnHouseData(inFile):
   print(withPruning)
   print(withoutPruning)
   print("average with pruning",sum(withPruning)/len(withPruning)," without: ",sum(withoutPruning)/len(withoutPruning))
-
+  reslist=[sum(withPruning)/len(withPruning), sum(withoutPruning)/len(withoutPruning)]
+  return reslist
 
 #####added by Jimin for testing
 def main():
@@ -177,7 +182,17 @@ def main():
   #testPruningJimin()
   #testID3AndTest()
   #testID3AndTestJimin()
-  testPruningOnHouseData("house_votes_84.data")
+  n_tr_exmpls=[]
+  w_pruneavgs=[]
+  wo_pruneavgs=[]
+  for i in range (10,301,15):
+    indivres = testPruningOnHouseData("house_votes_84.data",i)
+    n_tr_exmpls.append(i)
+    w_pruneavgs.append(indivres[0])
+    wo_pruneavgs.append(indivres[1])
+  print("number of training examples : " + str(n_tr_exmpls))
+  print("withprune averages : " + str(w_pruneavgs))
+  print("without prune averages : " + str(wo_pruneavgs))
 
   #print(ID3.getSubset(data,'b',0))
 
