@@ -258,24 +258,12 @@ def mode_class(examples): #returns the mode Class among examples.
   class_count = count_classes(examples)
   return max(class_count, key=class_count.get)
 
-def pruneworthy(node, examples): #todo: dsf
-  if len(examples)==0:
-    return True
-
-  correct = 0
-  for row in examples:
-    if row['Class'] == mode_class(examples):
-      correct += 1
-
-  if float(correct)/len(examples) >= test(node,examples):
-      return True
-  return False
-
 def hasGC(node):
   for child in node.getChildren():
     if len(child.getChildren()) > 0:
       return True
   return False
+
 def subset(examples, label):
   subsets = {}
 

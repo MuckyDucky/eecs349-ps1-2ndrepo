@@ -6,15 +6,6 @@ class Node:
     self.attribute = attribute
     self.children = [] #list of list of dict of value + rows
     self.parent=None
-    self.traversed=False
-  #   self.isLeaf=False
-  #   self.examples=[]
-  #
-  # def makeLeaf(self):
-  #   self.isLeaf = True
-  # def isLeaf(self):
-  #   if self.isLeaf==True:
-  #       return True
   def addChild(self, Node):
      self.children.append(Node)
      self.children[-1].parent=self
